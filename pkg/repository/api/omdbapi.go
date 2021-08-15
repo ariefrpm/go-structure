@@ -23,7 +23,7 @@ func NewMovieRepo(client client.HttpClient) MovieRepo {
 }
 
 const (
-	BaseUrl = "http://www.omdbapi.com22"
+	BaseUrl = "http://www.omdbapi.com"
 	OmdbKey = "faf7e5bb"
 )
 
