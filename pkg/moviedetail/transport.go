@@ -3,8 +3,8 @@ package moviedetail
 import (
 	"context"
 	"encoding/json"
+	"github.com/ariefrpm/movies2/gen/go/proto/v1"
 	"github.com/ariefrpm/movies2/pkg/library/router"
-	"github.com/ariefrpm/movies2/pkg/proto"
 	"net/http"
 )
 
@@ -49,10 +49,11 @@ func grpcEncodeResponse(_ context.Context, r interface{}) (interface{}, error) {
 
 func grpcDecodeRequest(_ context.Context, r interface{}) (interface{}, error) {
 	req := r.(*proto.MovieDetailRequest)
-	return request{ID:req.OmdbID}, nil
+	return request{ID:req.OmdbId}, nil
 }
 
 type grpcTransport struct {
+	proto.UnimplementedMovieDetailServiceServer
 	handler router.Handler
 }
 

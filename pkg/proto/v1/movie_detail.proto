@@ -1,13 +1,13 @@
 syntax = "proto3";
-package proto;
-option go_package = "../proto";
+package proto.v1;
+option go_package = "/proto";
 
 service MovieDetailService {
     rpc MovieDetail(MovieDetailRequest) returns (MovieDetailResponse);
 }
 
 message MovieDetailRequest {
-    string omdbID = 1;
+    string omdb_id = 1;
 }
 
 message MovieDetailResponse {

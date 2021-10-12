@@ -1,6 +1,6 @@
 syntax = "proto3";
-package proto;
-option go_package = "../proto";
+package proto.v1;
+option go_package = "/proto";
 
 service SearchMovieService {
     rpc SearchMovie(SearchMovieRequest) returns (SearchMovieResponse);
@@ -19,7 +19,7 @@ message SearchMovieResponse {
 message SearchMovieItemResponse {
     string title = 1;
     string year = 2;
-    string imdbID = 3;
+    string imdb_id = 3;
     string type = 4;
     string poster = 5;
 }

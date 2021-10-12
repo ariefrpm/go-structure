@@ -1,0 +1,9 @@
+version: v1beta1
+name: buf.build/ariefrpm/go-structure
+
+build:
+  roots:
+    - pkg
+lint:
+  use:
+    - DEFAULT
