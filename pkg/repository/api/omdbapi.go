@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"log"
+
 	client "github.com/ariefrpm/movies2/pkg/library/http-client"
 )
 
@@ -13,6 +15,10 @@ type MovieRepo interface {
 }
 
 type movieRepo struct {
+	client client.HttpClient
+}
+
+type saldoRepo struct {
 	client client.HttpClient
 }
 
@@ -28,6 +34,7 @@ const (
 )
 
 func (m *movieRepo) MovieDetail(imdbID string) (*Movie, error) {
+	log.Print("sini 4")
 	url := fmt.Sprintf("%s/?apikey=%s&i=%s", BaseUrl, OmdbKey, imdbID)
 
 	data, err := m.client.GET(url)

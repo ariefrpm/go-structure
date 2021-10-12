@@ -3,9 +3,10 @@ package moviedetail
 import (
 	"context"
 	"encoding/json"
+	"net/http"
+
 	"github.com/ariefrpm/movies2/pkg/library/router"
 	"github.com/ariefrpm/movies2/pkg/proto"
-	"net/http"
 )
 
 func restDecodeRequest(_ context.Context, r *http.Request) (interface{}, error) {
@@ -18,7 +19,7 @@ func restEncodeResponse(ctx context.Context, w http.ResponseWriter, response int
 	return json.NewEncoder(w).Encode(response)
 }
 
-func restEncodeError(_ context.Context, err error, w http.ResponseWriter)  {
+func restEncodeError(_ context.Context, err error, w http.ResponseWriter) {
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.WriteHeader(http.StatusInternalServerError)
 	_ = json.NewEncoder(w).Encode(map[string]interface{}{
@@ -49,14 +50,15 @@ func grpcEncodeResponse(_ context.Context, r interface{}) (interface{}, error) {
 
 func grpcDecodeRequest(_ context.Context, r interface{}) (interface{}, error) {
 	req := r.(*proto.MovieDetailRequest)
-	return request{ID:req.OmdbID}, nil
+	return request{ID: req.OmdbID}, nil
 }
 
 type grpcTransport struct {
+	proto.UnimplementedMovieDetailServiceServer
 	handler router.Handler
 }
 
-func (g *grpcTransport)  MovieDetail(ctx context.Context, request *proto.MovieDetailRequest) (*proto.MovieDetailResponse, error) {
+func (g *grpcTransport) MovieDetail(ctx context.Context, request *proto.MovieDetailRequest) (*proto.MovieDetailResponse, error) {
 	_, res, err := g.handler.ServeGRPC(ctx, request)
 	if err != nil {
 		return nil, err

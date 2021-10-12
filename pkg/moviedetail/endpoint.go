@@ -2,6 +2,8 @@ package moviedetail
 
 import (
 	"context"
+	"log"
+
 	"github.com/ariefrpm/movies2/pkg/library/router"
 	"github.com/ariefrpm/movies2/pkg/proto"
 	"google.golang.org/grpc"
@@ -29,6 +31,7 @@ func RestHandler(svc Service, r router.Router) {
 }
 
 func GrpcHandler(svc Service, grpcServer *grpc.Server) {
-	t := &grpcTransport{handler:router.NewGrpcHandler(endpoint(svc), grpcDecodeRequest, grpcEncodeResponse)}
+	t := &grpcTransport{handler: router.NewGrpcHandler(endpoint(svc), grpcDecodeRequest, grpcEncodeResponse)}
+	log.Print("MOVIE", t)
 	proto.RegisterMovieDetailServiceServer(grpcServer, t)
 }

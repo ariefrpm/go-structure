@@ -2,22 +2,25 @@ package server
 
 import (
 	"fmt"
-	"github.com/ariefrpm/movies2/pkg/moviedetail"
-	"github.com/ariefrpm/movies2/pkg/service"
-	"google.golang.org/grpc"
 	"log"
 	"net"
+
+	"github.com/ariefrpm/movies2/pkg/moviedetail"
+	"github.com/ariefrpm/movies2/pkg/saldodetail"
+	"github.com/ariefrpm/movies2/pkg/service"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 )
 
 type grpcServer struct {
-	svc  *service.Services
+	svc   *service.Services
 	port  int
 	errCh chan error
 }
 
-func NewGrpcServer(svc  *service.Services, port int) Server {
+func NewGrpcServer(svc *service.Services, port int) Server {
 	return &grpcServer{
-		svc: svc,
+		svc:  svc,
 		port: port,
 	}
 }
@@ -30,8 +33,9 @@ func (g *grpcServer) Run() {
 		g.errCh <- err
 	}
 	grpcServer := grpc.NewServer()
-
+	reflection.Register(grpcServer)
 	moviedetail.GrpcHandler(g.svc.MovieDetailService, grpcServer)
+	saldodetail.GrpcHandler(g.svc.SaldoDetailService, grpcServer)
 
 	err = grpcServer.Serve(lis)
 	if err != nil {

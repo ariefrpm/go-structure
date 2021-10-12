@@ -2,15 +2,17 @@ package server
 
 import (
 	"fmt"
-	"github.com/ariefrpm/movies2/pkg/library/router"
-	"github.com/ariefrpm/movies2/pkg/moviedetail"
-	"github.com/ariefrpm/movies2/pkg/service"
 	"log"
 	"net/http"
+
+	"github.com/ariefrpm/movies2/pkg/library/router"
+	"github.com/ariefrpm/movies2/pkg/moviedetail"
+	"github.com/ariefrpm/movies2/pkg/saldodetail"
+	"github.com/ariefrpm/movies2/pkg/service"
 )
 
 type httpServer struct {
-	svc  *service.Services
+	svc   *service.Services
 	port  int
 	errCh chan error
 }
@@ -18,7 +20,7 @@ type httpServer struct {
 func NewHttpServer(svc *service.Services, port int) Server {
 	return &httpServer{
 		svc:  svc,
-		port:  port,
+		port: port,
 	}
 }
 
@@ -28,7 +30,7 @@ func (h *httpServer) Run() {
 	route := router.NewDefaultRouter()
 
 	moviedetail.RestHandler(h.svc.MovieDetailService, route)
-
+	saldodetail.RestHandler(h.svc.SaldoDetailService, route)
 	err := http.ListenAndServe(fmt.Sprintf(":%d", h.port), route.Handler())
 
 	if err != nil {

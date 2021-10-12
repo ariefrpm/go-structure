@@ -2,6 +2,8 @@ package moviedetail
 
 import (
 	"errors"
+	"log"
+
 	"github.com/ariefrpm/movies2/pkg/repository/api"
 	"github.com/ariefrpm/movies2/pkg/repository/db"
 )
@@ -22,11 +24,12 @@ func NewMovieDetailService(api api.MovieRepo, db db.Dummy) Service {
 		db:  db,
 	}
 	svc = NewLoggingMiddleware(svc)
-
+	log.Print("sini 1")
 	return svc
 }
 
 func (s *service) MovieDetail(omdbID string) (*Movie, error) {
+	log.Print("sini 2")
 	if omdbID == "" {
 		return nil, errors.New("imdbID is empty")
 	}
