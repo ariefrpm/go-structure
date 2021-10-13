@@ -1,0 +1,15 @@
+syntax = "proto3";
+package proto.v1;
+option go_package = "/proto";
+
+service SaldoDetailService {
+    rpc SaldoDetail(SaldoDetailRequest) returns (SaldoDetailResponse);
+}
+
+message SaldoDetailRequest{
+    int64 kas_id = 1;
+}
+
+message SaldoDetailResponse{
+    double total_saldo = 1;
+}

@@ -5,8 +5,8 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/ariefrpm/movies2/gen/go/proto/v1"
 	"github.com/ariefrpm/movies2/pkg/library/router"
-	"github.com/ariefrpm/movies2/pkg/proto"
 )
 
 func restDecodeRequest(_ context.Context, r *http.Request) (interface{}, error) {
@@ -50,7 +50,7 @@ func grpcEncodeResponse(_ context.Context, r interface{}) (interface{}, error) {
 
 func grpcDecodeRequest(_ context.Context, r interface{}) (interface{}, error) {
 	req := r.(*proto.MovieDetailRequest)
-	return request{ID: req.OmdbID}, nil
+	return request{ID: req.OmdbId}, nil
 }
 
 type grpcTransport struct {

@@ -4,8 +4,8 @@ import (
 	"context"
 	"log"
 
+	"github.com/ariefrpm/movies2/gen/go/proto/v1"
 	"github.com/ariefrpm/movies2/pkg/library/router"
-	"github.com/ariefrpm/movies2/pkg/proto"
 	"google.golang.org/grpc"
 )
 
