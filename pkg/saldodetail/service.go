@@ -11,10 +11,10 @@ type Service interface {
 }
 
 type service struct {
-	db db.ConnectMysql
+	db mysql.ConnectMysql
 }
 
-func NewSaldoDetailService(db db.ConnectMysql) Service {
+func NewSaldoDetailService(db mysql.ConnectMysql) Service {
 	var svc Service
 	svc = &service{
 		db: db,

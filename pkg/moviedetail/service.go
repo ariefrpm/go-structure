@@ -14,10 +14,10 @@ type Service interface {
 
 type service struct {
 	api api.MovieRepo
-	db  db.Dummy
+	db  mysql.Dummy
 }
 
-func NewMovieDetailService(api api.MovieRepo, db db.Dummy) Service {
+func NewMovieDetailService(api api.MovieRepo, db mysql.Dummy) Service {
 	var svc Service
 	svc = &service{
 		api: api,

@@ -1,6 +1,7 @@
-package db
+package mysql
 
 import (
+	"database/sql"
 	"github.com/jinzhu/gorm"
 	//_ "github.com/jinzhu/gorm/dialects/postgres"
 	"log"
@@ -10,18 +11,19 @@ import (
 	"github.com/joho/godotenv"
 )
 
-type ConnectMysql interface {
-	InitDB() (*gorm.DB, error)
+type MySql struct {
+	DB *sql.DB
 }
 
-type connect struct {
+func NewMySql() *MySql {
+	s, err := dbConnection()
+	if err != nil {
+		panic(err.Error())
+	}
+	return s
 }
 
-func NewConnectionMysql() ConnectMysql {
-	return &connect{}
-}
-
-func (c *connect) InitDB() (*gorm.DB, error) {
+func dbConnection() (*MySql, error) {
 	var db *gorm.DB
 	err := godotenv.Load(".env")
 	// dbUri := os.Getenv("db_uri")
@@ -32,8 +34,11 @@ func (c *connect) InitDB() (*gorm.DB, error) {
 	db, err = gorm.Open("mysql", dsn)
 	if err != nil {
 		log.Printf(err.Error())
+		return nil, err
 	}
 	db.LogMode(true)
 
-	return db, err
+	return &MySql{
+		DB: db.DB(),
+	}, err
 }
