@@ -16,7 +16,7 @@ type Services struct {
 func CreateServices(r *repository.Repository) *Services {
 	log.Print("kesini yaa")
 	m := moviedetail.NewMovieDetailService(r.MovieRepo, r.DummyRepo)
-	s := saldodetail.NewSaldoDetailService(r.DBMysql)
+	s := saldodetail.NewSaldoDetailService(r.SaldoRepo)
 	return &Services{
 		MovieDetailService: m,
 		SaldoDetailService: s,
