@@ -3,7 +3,7 @@ package saldodetail
 import (
 	"log"
 
-	"github.com/ariefrpm/movies2/pkg/repository/db"
+	"github.com/ariefrpm/movies2/pkg/repository/mysql"
 )
 
 type Service interface {
@@ -11,10 +11,10 @@ type Service interface {
 }
 
 type service struct {
-	db db.ConnectMysql
+	db mysql.Saldo
 }
 
-func NewSaldoDetailService(db db.ConnectMysql) Service {
+func NewSaldoDetailService(db mysql.Saldo) Service {
 	var svc Service
 	svc = &service{
 		db: db,
@@ -25,28 +25,12 @@ func NewSaldoDetailService(db db.ConnectMysql) Service {
 }
 
 func (s *service) SaldoDetail(kasId int64) (*SaldoTransaksiKasDetail, error) {
-	database, err := s.db.InitDB()
-	
-	log.Print("lanjut response")
-	// var total float64 = 1000
-	// var database *gorm.DB
-	type SaldoAkhir struct {
-		Saldo float64 `gorm:"column:saldoAkhir"`
-	}
-	query := `select (untukKas - dariKas) saldoAkhir from(
-	select sum(dariKas) dariKas, sum(untukKas) untukKas from(
-		SELECT sum(nominal) darikas, 0 untukKas FROM r_transaksi_kas where dari_kas_id=?
-		union all 
-		SELECT 0 darikas, sum(nominal) untukKas FROM r_transaksi_kas where untuk_kas_id=?
-		)x )y;`
+	rowData, err := s.db.SelectSaldo(kasId)
 
-	var result []*SaldoAkhir
-	err = database.Raw(query, kasId, kasId).Scan(&result).Error
-	log.Print(result[0].Saldo)
 	if err != nil {
 		log.Print(err.Error())
 	}
 	return &SaldoTransaksiKasDetail{
-		TotalSaldo: result[0].Saldo,
+		TotalSaldo: rowData.Saldo,
 	}, nil
 }

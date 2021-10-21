@@ -5,7 +5,8 @@ import (
 	"log"
 
 	"github.com/ariefrpm/movies2/pkg/repository/api"
-	"github.com/ariefrpm/movies2/pkg/repository/db"
+	"github.com/ariefrpm/movies2/pkg/repository/mysql"
+	// "github.com/ariefrpm/movies2/pkg/repository/db"
 )
 
 type Service interface {
@@ -14,14 +15,14 @@ type Service interface {
 
 type service struct {
 	api api.MovieRepo
-	db  db.Dummy
+	// db  mysql.Dummy
 }
 
-func NewMovieDetailService(api api.MovieRepo, db db.Dummy) Service {
+func NewMovieDetailService(api api.MovieRepo, db mysql.Dummy) Service {
 	var svc Service
 	svc = &service{
 		api: api,
-		db:  db,
+		// db:  db,
 	}
 	svc = NewLoggingMiddleware(svc)
 	log.Print("sini 1")
@@ -38,7 +39,7 @@ func (s *service) MovieDetail(omdbID string) (*Movie, error) {
 		return nil, err
 	}
 
-	s.db.GetSomething()
+	// s.db.GetSomething()
 
 	return &Movie{
 		Title:    movie.Title,
